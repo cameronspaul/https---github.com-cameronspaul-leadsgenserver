@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YouTube Analyzer API</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        h1 {
+            color: #cc0000;
+        }
+        h2 {
+            color: #333;
+            margin-top: 30px;
+        }
+        code {
+            background-color: #f4f4f4;
+            padding: 2px 5px;
+            border-radius: 3px;
+        }
+        pre {
+            background-color: #f4f4f4;
+            padding: 10px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+        .endpoint {
+            margin-bottom: 30px;
+        }
+    </style>
+</head>
+<body>
+    <h1>YouTube Analyzer API</h1>
+    <p>This API provides endpoints to search for and analyze YouTube channels, including filtering videos by date ranges.</p>
+
+    <h2>API Endpoints</h2>
+
+    <div class="endpoint">
+        <h3>Health Check</h3>
+        <pre><code>GET /api/health</code></pre>
+        <p>Returns a simple health check response to verify the API is running.</p>
+    </div>
+
+    <div class="endpoint">
+        <h3>Search for YouTube Channels</h3>
+        <pre><code>GET /api/search?query=SEARCH_TERM&max_results=5</code></pre>
+        <p><strong>Parameters:</strong></p>
+        <ul>
+            <li><code>query</code> (required): Search term for YouTube channels</li>
+            <li><code>max_results</code> (optional): Maximum number of results to return (default: 5, max: 50)</li>
+        </ul>
+        <p>Returns a list of YouTube channels matching the search query.</p>
+    </div>
+
+    <div class="endpoint">
+        <h3>Analyze a Specific YouTube Channel</h3>
+        <pre><code>GET /api/channel?channel_id=CHANNEL_ID&days=3</code></pre>
+        <p><strong>Parameters (one of the following is required):</strong></p>
+        <ul>
+            <li><code>channel_id</code>: YouTube channel ID</li>
+            <li><code>username</code>: YouTube username</li>
+            <li><code>handle</code>: YouTube handle (with or without @)</li>
+        </ul>
+        <p><strong>Date filtering parameters (optional):</strong></p>
+        <ul>
+            <li><code>days</code>: Only include videos from the last X days</li>
+            <li><code>start_date</code>: Only include videos published after this date (format: YYYY-MM-DD)</li>
+            <li><code>end_date</code>: Only include videos published before this date (format: YYYY-MM-DD)</li>
+        </ul>
+        <p><strong>Other parameters:</strong></p>
+        <ul>
+            <li><code>extract_links</code> (optional): Whether to extract external links from the channel's about page (default: false)</li>
+            <li><code>debug</code> (optional): Whether to show detailed debug information in the server logs (default: false)</li>
+        </ul>
+    </div>
+
+    <div class="endpoint">
+        <h3>Search and Analyze YouTube Channels</h3>
+        <pre><code>GET /api/analyze?query=SEARCH_TERM&max_results=5&days=3</code></pre>
+        <p>Returns detailed metrics and information about multiple YouTube channels matching the search query, including video URLs and thumbnail links.</p>
+    </div>
+
+    <h2>Note</h2>
+    <p>This API is running as a serverless function on Netlify. Due to platform limitations, the <code>extract_links</code> feature that uses Playwright may not be available.</p>
+</body>
+</html>
