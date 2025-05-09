@@ -10,4 +10,4 @@ cmds = [
 ]
 
 [start]
-cmd = "gunicorn api:app --bind 127.0.0.1:$PORT"
+cmd = "gunicorn api:app --bind 0.0.0.0:$PORT"
