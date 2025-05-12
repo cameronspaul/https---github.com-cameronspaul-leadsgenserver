@@ -2,7 +2,15 @@
 
 This API provides endpoints to search for and analyze YouTube channels, including filtering videos by date ranges.
 
-## Setup
+## Deployment Options
+
+This application can be deployed in several ways:
+
+1. **Local Development**: Run the application locally for development and testing
+2. **Docker**: Deploy using Docker for containerized environments
+3. **Red Hat OpenShift**: Deploy on Red Hat OpenShift for enterprise-grade hosting
+
+## Local Development Setup
 
 1. Install the required dependencies:
    ```
@@ -14,12 +22,39 @@ This API provides endpoints to search for and analyze YouTube channels, includin
    playwright install
    ```
 
-3. Run the API server:
+3. Set your YouTube API key as an environment variable:
    ```
-   python api.py
+   # Linux/macOS
+   export YOUTUBE_API_KEY=your_api_key_here
+   
+   # Windows
+   set YOUTUBE_API_KEY=your_api_key_here
+   ```
+
+4. Run the API server:
+   ```
+   python app.py
    ```
 
 The API will be available at `http://localhost:8080`.
+
+## Docker Deployment
+
+1. Build the Docker image:
+   ```
+   docker build -t youtube-analyzer-api .
+   ```
+
+2. Run the container:
+   ```
+   docker run -p 8080:8080 -e YOUTUBE_API_KEY=your_api_key_here youtube-analyzer-api
+   ```
+
+The API will be available at `http://localhost:8080`.
+
+## Red Hat OpenShift Deployment
+
+For detailed instructions on deploying to Red Hat OpenShift, see [OPENSHIFT_DEPLOYMENT.md](OPENSHIFT_DEPLOYMENT.md).
 
 ## API Endpoints
 
@@ -29,7 +64,7 @@ The API will be available at `http://localhost:8080`.
 GET /api/health
 ```
 
-Returns a simple health check response to verify the API is running.
+Returns a health check response with environment information.
 
 ### Search for YouTube Channels
 
@@ -106,30 +141,6 @@ GET /api/channel?channel_id=UC_x5XG1OV2P6uZZ5FSM9Ttw&start_date=2023-01-01&end_d
 GET /api/analyze?query=tech%20news&max_results=3&days=7
 ```
 
-## Response Data
-
-### Video Information
-
-For each video, the API returns the following information:
-
-- `title`: The title of the video
-- `published_at`: The date and time when the video was published
-- `views`: The number of views
-- `likes`: The number of likes
-- `comments`: The number of comments
-- `video_id`: The YouTube video ID
-- `video_url`: The direct URL to the video (e.g., https://www.youtube.com/watch?v=VIDEO_ID)
-- `thumbnail_url`: The URL to the video thumbnail image
-
-### Channel Information
-
-For each channel, the API returns:
-
-- Basic channel details (title, ID, subscriber count, etc.)
-- Video metrics (average views, likes, comments, etc.)
-- Recent videos with the information listed above
-- External links (if requested with the `extract_links` parameter)
-
 ## Notes
 
 - The API uses the YouTube Data API, which has rate limits. If you encounter rate limit errors, wait and try again later.
@@ -156,3 +167,7 @@ If the external links extraction is not working:
 3. Check the server logs for any errors related to Playwright.
 
 4. Some YouTube channels may have anti-scraping measures or different page layouts that make it difficult to extract links. Try with a different channel to see if the issue is specific to one channel.
+
+## License
+
+This project is licensed under the MIT License - see the LICENSE file for details.

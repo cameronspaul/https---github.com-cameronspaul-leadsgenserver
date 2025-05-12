@@ -1,0 +1,15 @@
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: youtube-analyzer-api
+  labels:
+    app: youtube-analyzer-api
+spec:
+  to:
+    kind: Service
+    name: youtube-analyzer-api
+  port:
+    targetPort: http
+  tls:
+    termination: edge
+    insecureEdgeTerminationPolicy: Redirect

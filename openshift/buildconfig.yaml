@@ -1,0 +1,23 @@
+apiVersion: build.openshift.io/v1
+kind: BuildConfig
+metadata:
+  name: youtube-analyzer-api
+  labels:
+    app: youtube-analyzer-api
+spec:
+  source:
+    git:
+      uri: "YOUR_GIT_REPOSITORY_URL"  # Replace with your Git repository URL
+      ref: "main"  # Replace with your branch name
+    contextDir: "/"
+  strategy:
+    type: Docker
+    dockerStrategy:
+      dockerfilePath: Dockerfile
+  output:
+    to:
+      kind: ImageStreamTag
+      name: youtube-analyzer-api:latest
+  triggers:
+    - type: ConfigChange
+    - type: ImageChange

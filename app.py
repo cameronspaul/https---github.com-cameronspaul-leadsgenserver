@@ -3,17 +3,57 @@ from flask_cors import CORS
 import youtube_analyzer
 import datetime
 import traceback
+import os
+import logging
+import sys
 
+# Import OpenShift utilities if available
+try:
+    import openshift_utils
+    OPENSHIFT_UTILS_AVAILABLE = True
+except ImportError:
+    OPENSHIFT_UTILS_AVAILABLE = False
+
+# Configure logging
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+    handlers=[logging.StreamHandler(sys.stdout)]
+)
+logger = logging.getLogger('youtube_analyzer_api')
+
+# Initialize the Flask application
 app = Flask(__name__)
 CORS(app)  # Enable CORS for all routes
 
+# Initialize OpenShift environment if running in OpenShift
+if OPENSHIFT_UTILS_AVAILABLE:
+    logger.info("Initializing OpenShift environment")
+    openshift_config = openshift_utils.initialize_openshift_environment()
+    logger.info(f"OpenShift configuration: {openshift_config}")
+else:
+    logger.info("OpenShift utilities not available, running in standard mode")
+
 @app.route('/api/health', methods=['GET'])
 def health_check():
-    """Simple health check endpoint"""
-    return jsonify({
+    """Health check endpoint with environment information"""
+    health_data = {
         "status": "ok",
-        "timestamp": datetime.datetime.now().isoformat()
-    })
+        "timestamp": datetime.datetime.now().isoformat(),
+        "environment": {
+            "python_version": sys.version,
+            "playwright_available": youtube_analyzer.PLAYWRIGHT_AVAILABLE
+        }
+    }
+
+    # Add OpenShift-specific information if available
+    if OPENSHIFT_UTILS_AVAILABLE:
+        health_data["environment"]["openshift"] = {
+            "running_in_openshift": os.environ.get('OPENSHIFT_BUILD_NAME') is not None,
+            "openshift_config": openshift_config if 'openshift_config' in globals() else None
+        }
+
+    return jsonify(health_data)
 
 @app.route('/api/channel', methods=['GET'])
 def analyze_channel():
