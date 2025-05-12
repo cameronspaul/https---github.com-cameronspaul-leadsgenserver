@@ -1000,13 +1000,11 @@ def search_youtube_channels(query, max_results=5):
     Returns:
         list: List of channel information dictionaries
     """
-    # You'll need to set up a YouTube API key
-    # Get it from https://console.developers.google.com/
-    api_key = "AIzaSyAl9mCDiMfKzLZuNIkglSd9AzWESr2eyek"
+
 
     try:
         # Initialize the YouTube API client
-        youtube = build('youtube', 'v3', developerKey=api_key)
+        youtube = build('youtube', 'v3', developerKey=API_KEY)
 
         # Search for channels
         print(f"Searching for YouTube channels with query: '{query}'")
