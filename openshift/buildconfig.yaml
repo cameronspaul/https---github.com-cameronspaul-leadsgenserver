@@ -7,7 +7,7 @@ metadata:
 spec:
   source:
     git:
-      uri: "YOUR_GIT_REPOSITORY_URL"  # Replace with your Git repository URL
+      uri: "https://github.com/cameronspaul/https---github.com-cameronspaul-leadsgenserver.git"  # Replace with your Git repository URL
       ref: "main"  # Replace with your branch name
     contextDir: "/"
   strategy:
