@@ -1,3 +1,6 @@
+ngrok http --url=cockatoo-natural-trout.ngrok-free.app 80
+
+
 # YouTube Analyzer API
 
 This API provides endpoints to search for and analyze YouTube channels, including filtering videos by date ranges.
